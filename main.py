@@ -7,10 +7,10 @@ model = ai.model(6, 100, [
   ai.nn(outshape=100, activation=ai.relu(), learningrate=0.1),
   ai.nn(outshape=100, activation=ai.relu(), learningrate=0.1),
   ai.nn(outshape=100, activation=ai.relu(), learningrate=0.1),
-  ai.nn(outshape=100, activation=ai.stablesoftmax(), learningrate=0.1)
+  ai.nn(outshape=100, activation=ai.sigmoid(), learningrate=0.1)
 ])
  
-stonk = pdr.get_data_yahoo("AAPL", start="2020-01-01", end="2021-12-21")
+stonk = pdr.get_data_yahoo("AAPL", start="2015-01-01", end="2021-12-21")
 
 High = np.array([])
 Low = np.array([])
