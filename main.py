@@ -3,14 +3,14 @@ from pandas_datareader import data as pdr
 import numpy as np
 import aiinpy as ai
 
-model = ai.model(6, 100, [
+model = ai.model(7, 100, [
   ai.nn(outshape=100, activation=ai.relu(), learningrate=0.1),
   ai.nn(outshape=100, activation=ai.relu(), learningrate=0.1),
   ai.nn(outshape=100, activation=ai.relu(), learningrate=0.1),
   ai.nn(outshape=100, activation=ai.sigmoid(), learningrate=0.1)
 ])
  
-stonk = pdr.get_data_yahoo("AAPL", start="2015-01-01", end="2021-12-21")
+stonk = pdr.get_data_yahoo("AAPL", start="2019-01-01", end="2021-12-21")
 
 High = np.array([])
 Low = np.array([])
@@ -18,6 +18,7 @@ AveragePrice = np.array([])
 StandardDiviation = np.array([])
 Open = np.array([])
 Close = np.array([])
+Volume = np.array([])
 
 for ind in stonk.index:
   Open = np.append(Open, stonk['Open'][ind])
@@ -26,8 +27,9 @@ for ind in stonk.index:
   High = np.append(High, stonk['High'][ind] / AveragePrice[-1])
   Low = np.append(Low, stonk['Low'][ind] / AveragePrice[-1])
   StandardDiviation = np.append(StandardDiviation, High[-1] - Low[-1])
+  Volume = np.append(Volume, stonk['Volume'][ind])
 
-input = np.zeros((len(Open) - 28, 6))
+input = np.zeros((len(Open) - 28, 7))
 output = np.zeros((len(Open) - 28, 100))
 
 for date in range(len(Open) - 28):
@@ -37,7 +39,8 @@ for date in range(len(Open) - 28):
     np.mean(StandardDiviation[date : date + 28]),
     (Close[date + 28] - Open[date]),
     Open[date],
-    Close[date + 28]
+    Close[date + 28],
+    np.mean(Volume[date : date + 28])
     ]
   k = np.zeros(100)
   k[int(np.min(Low[date + 28 : date + 56]) * 100)] = 1
