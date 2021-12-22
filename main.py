@@ -28,6 +28,8 @@ for ind in stonk.index:
   Low = np.append(Low, stonk['Low'][ind] / AveragePrice[-1])
   StandardDiviation = np.append(StandardDiviation, High[-1] - Low[-1])
   Volume = np.append(Volume, stonk['Volume'][ind])
+  Open[-1] = Open[-1] / AveragePrice[-1]
+  Close[-1] = Close[-1] / AveragePrice[-1]
 
 input = np.zeros((len(Open) - 28, 7))
 output = np.zeros((len(Open) - 28, 100))
